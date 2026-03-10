@@ -22,21 +22,19 @@ education = st.selectbox("Select your education", encoder["Education Level"].cla
 job_title = st.selectbox("Select your job title", encoder["Job Title"].classes_)
 experience = st.number_input("Enter your experiene(in years)", 0, 50)
 
+# IMPORTANT: column names must match training dataset
 df = pd.DataFrame({
     "Age":[age],
     "Gender":[gender],
     "Education Level":[education],
     "Job Title":[job_title],
-    "Experience":[experience]
+    "Years of Experience":[experience]
 })
 
 if st.button("predict salary"):
 
     for col in ["Gender","Education Level","Job Title"]:
         df[col] = encoder[col].transform(df[col])
-
-    # make dataframe columns exactly same as model training
-    df = df[model.feature_names_in_]
 
     prediction = model.predict(df)
 
