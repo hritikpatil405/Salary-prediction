@@ -11,43 +11,28 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load model and encoders
-model = joblib.load("salary_prediction_rfr_model.pkl")
-encoder = joblib.load("label_encoder_Salary.pkl")  # dictionary of LabelEncoders
+model = joblib.load('/salary_prediction_rfr_model.pkl')
+encoder = joblib.load('/label_encoder_Salary.pkl')
 
-st.title("💰 Salary Prediction Model")
+st.title('Salary Prediction model')
 
-# -------------------------
-# USER INPUT
-# -------------------------
-age = st.number_input("Enter your age", min_value=18, max_value=65, value=25)
-gender = st.selectbox("Select your gender", encoder["Gender"].classes_)
-education = st.selectbox("Select your education", encoder["Education Level"].classes_)
-job_title = st.selectbox("Select your job title", encoder["Job Title"].classes_)
-experience = st.number_input("Enter your experience (in years)", min_value=0, max_value=50, value=1)
+age = st.number_input("Enter your age", 18,65)
+gender = st.selectbox("Select your gender",encoder["Gender"].classes_)
+education = st.selectbox("Select your education",encoder["Education Level"])
+job_title = st.selectbox("Select your job title",encoder["Job Title"])
+experience = st.number_input("Enter your experiene(in years)",0,50 )
 
-# -------------------------
-# CREATE DATAFRAME
-# -------------------------
 df = pd.DataFrame({
-    "Age": [age],
-    "Gender": [gender],
-    "Education Level": [education],
-    "Job Title": [job_title],
-    "Experience": [experience]
+    "Enter your age":[age],
+    "Select your gender":[gender],
+    "Select your education":[education],
+    "Select your job title":[job_title],
+    "Enter your experiene(in years)":[experience]
 })
 
-# -------------------------
-# ENCODE CATEGORICAL VARIABLES
-# -------------------------
-categorical_cols = ["Gender", "Education Level", "Job Title"]
+if st.button("predict salary"):
+  for col in encoder:
+    df[col]= encoder[col].transform(df[col])
 
-for col in categorical_cols:
-    df[col] = encoder[col].transform(df[col])
-
-# -------------------------
-# PREDICTION
-# -------------------------
-if st.button("Predict Salary"):
-    prediction = model.predict(df)
-    st.success(f"Predicted Salary: ${prediction[0]:,.2f}")
+  prediction = model.predict(df)
+  st.success(f"predicted salary: {prediction[0]:}")
