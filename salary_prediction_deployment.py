@@ -11,8 +11,8 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-model = joblib.load('/salary_prediction_rfr_model.pkl')
-encoder = joblib.load('/label_encoder_Salary.pkl')
+model = joblib.load('salary_prediction_rfr_model.pkl')
+encoder = joblib.load('label_encoder_Salary.pkl')
 
 st.title('Salary Prediction model')
 
