@@ -31,10 +31,13 @@ df = pd.DataFrame({
 })
 
 if st.button("predict salary"):
-    
+
     for col in ["Gender","Education Level","Job Title"]:
         df[col] = encoder[col].transform(df[col])
 
+    # make dataframe columns exactly same as model training
+    df = df[model.feature_names_in_]
+
     prediction = model.predict(df)
-    
+
     st.success(f"predicted salary: {prediction[0]}")
